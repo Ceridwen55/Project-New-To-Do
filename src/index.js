@@ -18,7 +18,7 @@
     // C. BOTTOM-RIGHT
         //a. Create space where it contains the to do list block unique per project 
             // - there is a '+' icon to add a block for to do list
-                // - It shows an UI to add new to do including [ To-do name, Due Date, Urgency, description, notes, checklist]
+                // - It shows an UI to add new to do including [ To-do name, Due Date, Urgency, description]
                 // - after the block added, the block includes project name, urgency, and checklist and can be edited
 
 
@@ -36,13 +36,12 @@ top.textContent = "TO DO LIST";
 const bottomRight = document.getElementById("bottom-right");
 
 // Create Object constructor to make the to do 
-function toDo (name, date, urgency, description, notes)
+function toDo (name, date, urgency, description)
 {
     this.name = name;
     this.date = date;
     this.urgency = urgency;
-    this.desciption = description;
-    this.notes = notes;
+    this.description = description;
 }
 
 // Create add button
@@ -116,6 +115,20 @@ addToDo.addEventListener("click", function()
     {   
         
         tempDiv.innerHTML ='';
+        const result = new toDo(nameInput.value, dateInput.value, urgencyInput.value, descInput.value);
+        const block = document.createElement("div");
+        block.innerHTML =
+            `<h3>${result.name}</h3>
+            <p><strong>Due Date:</strong> ${result.date}</p>
+            <p><strong>Urgency:</strong> ${result.urgency}</p>
+            <p><strong>Description:</strong> ${result.description}</p>
+            <input type="checkbox" id="completed-checkbox">
+            `;
+        block.style.display = "flex";
+        block.style.flexDirection = "row";
+        block.style.alignItems = "center";
+        block.style.gap = "20px";
+        bottomRight.appendChild(block);
     });
 
     tempForm.appendChild(nameLabel);
