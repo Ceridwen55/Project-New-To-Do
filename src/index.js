@@ -110,27 +110,45 @@ addToDo.addEventListener("click", function()
     const submitBut = document.createElement("button");
     submitBut.setAttribute('type','submit');
     submitBut.textContent = "SUBMIT LIST";
-
+    
+    // create submit function to create a block
     submitBut.addEventListener("click",function()
     {   
         
         tempDiv.innerHTML ='';
         const result = new toDo(nameInput.value, dateInput.value, urgencyInput.value, descInput.value);
         const block = document.createElement("div");
+        
         block.innerHTML =
             `<h3>${result.name}</h3>
             <p><strong>Due Date:</strong> ${result.date}</p>
             <p><strong>Urgency:</strong> ${result.urgency}</p>
             <p><strong>Description:</strong> ${result.description}</p>
             <input type="checkbox" id="completed-checkbox">
+            <button class="deltodo">DELETE</button>
+            
             `;
+            
+        setTimeout(function() {
+        const deleteButtons = document.getElementsByClassName("deltodo");
+                
+        
+        for (let i = 0; i < deleteButtons.length; i++) 
+            {
+                deleteButtons[i].addEventListener("click", function() 
+                {
+                    block.innerHTML = '';  
+                });
+            }
+              }, 0);
+
         block.style.display = "flex";
         block.style.flexDirection = "row";
         block.style.alignItems = "center";
         block.style.gap = "20px";
         bottomRight.appendChild(block);
     });
-
+    // append the element to div to display them
     tempForm.appendChild(nameLabel);
     tempForm.appendChild(nameInput);
     tempForm.appendChild(urgencyLabel);
@@ -146,5 +164,62 @@ addToDo.addEventListener("click", function()
 
     tempDiv.appendChild(tempForm);
     bottomRight.appendChild(tempDiv);
+
+})
+
+
+
+// BOTTOM LEFT ( PROJECT )
+
+const bottomLeft = document.getElementById("bottom-left");
+
+// Create a button to add project and a div/input to display project name
+
+const butAddProject = document.createElement("button");
+butAddProject.addEventListener("click",function()
+{   
+    const tempProDiv = document.createElement("div");
+    const tempProForm = document.createElement("form");
+
+    const projectLabel = document.createElement("label");
+    projectLabel.setAttribute('for','prolabel');
+    projectLabel.textContent = "PROJECT NAME";
+    
+    const projectInput = document.createElement("input");
+    projectInput.setAttribute('type','text');
+    projectInput.setAttribute('id','proname');
+    projectInput.setAttribute('name', 'proname');
+
+    tempProForm.appendChild(projectLabel);
+    tempProForm.appendChild(projectInput);
+    tempProForm.appendChild(proSub);
+
+    tempProDiv.appendChild(tempProForm);
+    bottomLeft.appendChild(tempProDiv);
+
+    // create submit button for after adding project
+    const proSub = document.createElement("button");
+    proSub.textContent = "ADD PROJECT";
+
+    // create a function after clicking submit in add project
+    proSub.addEventListener("click",function()
+    {
+        tempProDiv.innerHTML = '';
+        const proBlock = document.createElement("button");
+        proBlock.textContent = projectInput.value;
+
+        proBlock.addEventListener("click", function()
+        {
+
+        }
+        );
+
+
+
+    }
+    );
+
+
+    
 
 })
