@@ -23,203 +23,190 @@
 
 
 // TOP DIV
-
 const top = document.getElementById("top");
 top.textContent = "TO DO LIST";
 
-
-
-
-
-
-// BOTTOM RIGHT
+// BOTTOM-RIGHT DIV
 const bottomRight = document.getElementById("bottom-right");
 
-// Create Object constructor to make the to do 
-function toDo (name, date, urgency, description)
+// Create an object constructor for the to-do items and an array to store them
+function ToDo(name, date, urgency, description) 
 {
-    this.name = name;
-    this.date = date;
-    this.urgency = urgency;
-    this.description = description;
+  this.name = name;
+  this.date = date;
+  this.urgency = urgency;
+  this.description = description;
 }
 
-// Create add button
-const addToDo = document.createElement("button");
-addToDo.innerHTML = "ADD TO DO";
-bottomRight.appendChild(addToDo);
+const projects = JSON.parse(localStorage.getItem('projects')) || {};
 
-// Create UI that shows after click the button
-addToDo.addEventListener("click", function()
-{   
-    // create form and a div to hold the form
-    const tempDiv = document.createElement("div");
-    const tempForm = document.createElement("form");
+// Create an 'Add To Do' button for the bottom-right div
+const addToDoButton = document.createElement("button");
+addToDoButton.innerHTML = "ADD TO DO";
+bottomRight.appendChild(addToDoButton);
 
-    // create name label and input
-    const nameLabel = document.createElement("label");
-    nameLabel.setAttribute('for', 'name');
-    nameLabel.textContent = 'Name : ';
+// Function to render the to-do list for the selected project
+function renderToDoList(projectName) 
+{
+  bottomRight.innerHTML = ''; 
+  bottomRight.appendChild(addToDoButton); 
 
-    const nameInput = document.createElement("input");
-    nameInput.setAttribute('type', 'text');
-    nameInput.setAttribute('id', 'name');
-    nameInput.setAttribute('name','name');
+  const projectToDos = projects[projectName] || [];
 
-    // create urgency label and input
-    const urgencyLabel = document.createElement("label");
-    urgencyLabel.setAttribute('for', 'urgency');
-    urgencyLabel.textContent = 'Urgency : ';
-    const urgencyInput = document.createElement("select");
-    urgencyInput.setAttribute('id', 'urgency');
-    urgencyInput.setAttribute('name', 'urgency');
+  projectToDos.forEach((toDo, index) => 
+    {
+    const block = document.createElement("div");
+    block.innerHTML = `
+      <h3>${toDo.name}</h3>
+      <p><strong>Due Date:</strong> ${toDo.date}</p>
+      <p><strong>Urgency:</strong> ${toDo.urgency}</p>
+      <p><strong>Description:</strong> ${toDo.description}</p>
+      <input type="checkbox" id="completed-checkbox">
+      <button class="deltodo">DELETE</button>
+    `;
 
-    const option1 = document.createElement('option');
-    option1.setAttribute('value', 'low');
-    option1.textContent = 'Low';
+    block.style.display = "flex";
+    block.style.flexDirection = "row";
+    block.style.alignItems = "center";
+    block.style.gap = "20px";
+    bottomRight.appendChild(block);
 
-    const option2 = document.createElement('option');
-    option2.setAttribute('value', 'mid');
-    option2.textContent = 'Medium';
-
-    const option3 = document.createElement('option');
-    option3.setAttribute('value', 'High');
-    option3.textContent = 'High';
-
-    // create date label and input using date-fns
-    const dateLabel = document.createElement("label");
-    dateLabel.setAttribute('for', 'date');
-    dateLabel.textContent = "Due Date : ";
-
-    const dateInput = document.createElement("input");
-    dateInput.setAttribute('type', 'date');
-    dateInput.setAttribute('id','date');
-    dateInput.setAttribute('name', 'date');
-
-    // create description label and input
-    const descLabel = document.createElement("label");
-    descLabel.setAttribute('for','description');
-    descLabel.textContent = "Description : "
-
-    const descInput = document.createElement("input");
-    descInput.setAttribute('type', 'text');
-    descInput.setAttribute('id', 'description');
-    descInput.setAttribute('name','description');
-
-    // create submit button and it's function
-    const submitBut = document.createElement("button");
-    submitBut.setAttribute('type','submit');
-    submitBut.textContent = "SUBMIT LIST";
-    
-    // create submit function to create a block
-    submitBut.addEventListener("click",function()
-    {   
-        
-        tempDiv.innerHTML ='';
-        const result = new toDo(nameInput.value, dateInput.value, urgencyInput.value, descInput.value);
-        const block = document.createElement("div");
-        
-        block.innerHTML =
-            `<h3>${result.name}</h3>
-            <p><strong>Due Date:</strong> ${result.date}</p>
-            <p><strong>Urgency:</strong> ${result.urgency}</p>
-            <p><strong>Description:</strong> ${result.description}</p>
-            <input type="checkbox" id="completed-checkbox">
-            <button class="deltodo">DELETE</button>
-            
-            `;
-            
-        setTimeout(function() {
-        const deleteButtons = document.getElementsByClassName("deltodo");
-                
-        
-        for (let i = 0; i < deleteButtons.length; i++) 
-            {
-                deleteButtons[i].addEventListener("click", function() 
-                {
-                    block.innerHTML = '';  
-                });
-            }
-              }, 0);
-
-        block.style.display = "flex";
-        block.style.flexDirection = "row";
-        block.style.alignItems = "center";
-        block.style.gap = "20px";
-        bottomRight.appendChild(block);
+    // Delete button functionality
+    block.querySelector(".deltodo").addEventListener("click", function() 
+    {
+      projectToDos.splice(index, 1);
+      localStorage.setItem('projects', JSON.stringify(projects)); 
+      renderToDoList(projectName); 
     });
-    // append the element to div to display them
-    tempForm.appendChild(nameLabel);
-    tempForm.appendChild(nameInput);
-    tempForm.appendChild(urgencyLabel);
-    tempForm.appendChild(urgencyInput);
-    urgencyInput.appendChild(option1);
-    urgencyInput.appendChild(option2);
-    urgencyInput.appendChild(option3);
-    tempForm.appendChild(dateLabel);
-    tempForm.appendChild(dateInput);
-    tempForm.appendChild(descLabel);
-    tempForm.appendChild(descInput);
-    tempForm.appendChild(submitBut);
+  });
+}
 
-    tempDiv.appendChild(tempForm);
-    bottomRight.appendChild(tempDiv);
+// Create the UI for adding a new to-do
+addToDoButton.addEventListener("click", function() {
+  const formDiv = document.createElement("div");
+  const form = document.createElement("form");
 
-})
+  // Create name label and input
+  const nameLabel = document.createElement("label");
+  nameLabel.textContent = 'Name: ';
+  const nameInput = document.createElement("input");
+  nameInput.setAttribute('type', 'text');
 
+  // Create urgency label and select dropdown
+  const urgencyLabel = document.createElement("label");
+  urgencyLabel.textContent = 'Urgency: ';
+  const urgencySelect = document.createElement("select");
+  ['Low', 'Medium', 'High'].forEach(level => 
+    {
+    const option = document.createElement('option');
+    option.value = level.toLowerCase();
+    option.textContent = level;
+    urgencySelect.appendChild(option);
+    });
 
+  // Create date label and input
+  const dateLabel = document.createElement("label");
+  dateLabel.textContent = "Due Date: ";
+  const dateInput = document.createElement("input");
+  dateInput.setAttribute('type', 'date');
 
-// BOTTOM LEFT ( PROJECT )
+  // Create description label and input
+  const descLabel = document.createElement("label");
+  descLabel.textContent = "Description: ";
+  const descInput = document.createElement("input");
+  descInput.setAttribute('type', 'text');
 
+  // Submit button
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Submit";
+  submitButton.addEventListener("click", function(e) 
+  {
+    e.preventDefault();
+
+    // Get selected project name
+    const selectedProjectElement = document.querySelector('.selected-project');
+    if (!selectedProjectElement) {
+      alert('Please select a project before adding a to-do.');
+      return;
+    }
+
+    const currentProject = selectedProjectElement.textContent;
+    const newToDo = new ToDo(nameInput.value, dateInput.value, urgencySelect.value, descInput.value);
+
+    if (!projects[currentProject]) {
+      projects[currentProject] = [];
+    }
+    projects[currentProject].push(newToDo);
+    localStorage.setItem('projects', JSON.stringify(projects)); // Save to localStorage
+
+    renderToDoList(currentProject); // Render the new list
+    formDiv.remove(); // Remove the form after submission
+  });
+
+  // Append everything to the form
+  form.appendChild(nameLabel);
+  form.appendChild(nameInput);
+  form.appendChild(urgencyLabel);
+  form.appendChild(urgencySelect);
+  form.appendChild(dateLabel);
+  form.appendChild(dateInput);
+  form.appendChild(descLabel);
+  form.appendChild(descInput);
+  form.appendChild(submitButton);
+  formDiv.appendChild(form);
+
+  // Add the form to the bottom-right div
+  bottomRight.appendChild(formDiv);
+});
+
+// BOTTOM LEFT (PROJECTS DIV)
 const bottomLeft = document.getElementById("bottom-left");
 
-// Create a button to add project and a div/input to display project name
+// 'Add Project' button
+const addProjectButton = document.createElement("button");
+addProjectButton.textContent = "ADD PROJECT";
+bottomLeft.appendChild(addProjectButton);
 
-const butAddProject = document.createElement("button");
-butAddProject.addEventListener("click",function()
-{   
-    const tempProDiv = document.createElement("div");
-    const tempProForm = document.createElement("form");
+addProjectButton.addEventListener("click", function() {
+  const formDiv = document.createElement("div");
+  const form = document.createElement("form");
 
-    const projectLabel = document.createElement("label");
-    projectLabel.setAttribute('for','prolabel');
-    projectLabel.textContent = "PROJECT NAME";
-    
-    const projectInput = document.createElement("input");
-    projectInput.setAttribute('type','text');
-    projectInput.setAttribute('id','proname');
-    projectInput.setAttribute('name', 'proname');
+  const projectLabel = document.createElement("label");
+  projectLabel.textContent = "Project Name: ";
+  const projectInput = document.createElement("input");
+  projectInput.setAttribute('type', 'text');
 
-    tempProForm.appendChild(projectLabel);
-    tempProForm.appendChild(projectInput);
-    tempProForm.appendChild(proSub);
+  const submitProjectButton = document.createElement("button");
+  submitProjectButton.textContent = "Submit";
+  submitProjectButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    const projectName = projectInput.value.trim();
 
-    tempProDiv.appendChild(tempProForm);
-    bottomLeft.appendChild(tempProDiv);
-
-    // create submit button for after adding project
-    const proSub = document.createElement("button");
-    proSub.textContent = "ADD PROJECT";
-
-    // create a function after clicking submit in add project
-    proSub.addEventListener("click",function()
+    if (projectName && !projects[projectName]) 
     {
-        tempProDiv.innerHTML = '';
-        const proBlock = document.createElement("button");
-        proBlock.textContent = projectInput.value;
+      projects[projectName] = [];
+      localStorage.setItem('projects', JSON.stringify(projects));
 
-        proBlock.addEventListener("click", function()
-        {
+      const projectButton = document.createElement("button");
+      projectButton.textContent = projectName;
+      projectButton.classList.add('project-button');
 
-        }
-        );
+      // When a project is clicked, it shows its to-dos
+      projectButton.addEventListener("click", function()
+       {
+        document.querySelectorAll('.project-button').forEach(btn => btn.classList.remove('selected-project'));
+        projectButton.classList.add('selected-project');
+        renderToDoList(projectName);
+        });
 
-
-
+      bottomLeft.appendChild(projectButton);
+      formDiv.remove(); // Remove form after submission
     }
-    );
+  });
 
-
-    
-
-})
+  form.appendChild(projectLabel);
+  form.appendChild(projectInput);
+  form.appendChild(submitProjectButton);
+  formDiv.appendChild(form);
+  bottomLeft.appendChild(formDiv);
+});
