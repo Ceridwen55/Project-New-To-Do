@@ -22,9 +22,12 @@
                 // - after the block added, the block includes project name, urgency, and checklist and can be edited
 
 
+
 // TOP DIV
 const top = document.getElementById("top");
 top.textContent = "TO DO LIST";
+;
+
 
 // BOTTOM-RIGHT DIV
 const bottomRight = document.getElementById("bottom-right");
@@ -164,12 +167,14 @@ const bottomLeft = document.getElementById("bottom-left");
 
 // 'Add Project' button
 const addProjectButton = document.createElement("button");
-addProjectButton.textContent = "ADD PROJECT";
+addProjectButton.textContent = "ADD PROJECT +";
 bottomLeft.appendChild(addProjectButton);
 
 addProjectButton.addEventListener("click", function() {
   const formDiv = document.createElement("div");
   const form = document.createElement("form");
+  form.style.display = "flex";
+  form.style.gap = "5px";
 
   const projectLabel = document.createElement("label");
   projectLabel.textContent = "Project Name: ";
@@ -190,6 +195,9 @@ addProjectButton.addEventListener("click", function() {
       const projectButton = document.createElement("button");
       projectButton.textContent = projectName;
       projectButton.classList.add('project-button');
+      projectButton.style.fontSize = "16px";
+      projectButton.style.borderStyle = "dotted";
+      projectButton.style.fontWeight = "bold";
 
       // When a project is clicked, it shows its to-dos
       projectButton.addEventListener("click", function()
@@ -202,6 +210,7 @@ addProjectButton.addEventListener("click", function() {
       bottomLeft.appendChild(projectButton);
       formDiv.remove(); // Remove form after submission
     }
+
   });
 
   form.appendChild(projectLabel);
@@ -210,3 +219,54 @@ addProjectButton.addEventListener("click", function() {
   formDiv.appendChild(form);
   bottomLeft.appendChild(formDiv);
 });
+
+
+
+
+
+// LAYOUT STYLE
+const home = document.getElementById("home");
+home.style.display = "flex";
+home.style.width = "100%";
+home.style.height = "100vh";
+home.style.flexDirection = "column";
+home.appendChild(top);
+home.appendChild(bottom);
+home.style.fontFamily = "Lato";
+
+
+top.style.width = "100%";
+top.style.height = "40%";
+top.style.border = "solid";
+top.style.display = "flex";
+top.style.fontSize = "50px";
+top.style.fontStyle = "oblique";
+top.style.alignItems = "center";
+top.style.paddingLeft = "100px";
+
+
+bottom.style.display = "flex";
+
+bottom.style.width = "100%";
+bottom.style.height = "60%";
+bottom.style.border = "solid";
+bottom.style.paddingTop = "20px"
+
+
+
+bottomLeft.style.display = "flex";
+bottomLeft.style.flexDirection = "column";
+bottomLeft.style.alignItems = "center";
+bottomLeft.style.width = "30%";
+bottomLeft.style.height = "auto";
+bottomLeft.style.gap = "10px";
+
+addProjectButton.style.fontSize = "16px";
+addProjectButton.style.fontStyle = "oblique";
+addProjectButton.style.fontWeight = "bold";
+addProjectButton.style.borderRadius = "50px";
+
+
+
+
+
