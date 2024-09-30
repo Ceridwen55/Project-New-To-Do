@@ -31,6 +31,9 @@ top.textContent = "TO DO LIST";
 
 // BOTTOM-RIGHT DIV
 const bottomRight = document.getElementById("bottom-right");
+bottomRight.style.display = "flex";
+bottomRight.style.flexDirection = "column";
+bottomRight.style.gap = "10px";
 
 // Create an object constructor for the to-do items and an array to store them
 function ToDo(name, date, urgency, description) 
@@ -46,7 +49,12 @@ const projects = JSON.parse(localStorage.getItem('projects')) || {};
 // Create an 'Add To Do' button for the bottom-right div
 const addToDoButton = document.createElement("button");
 addToDoButton.innerHTML = "ADD TO DO";
+addToDoButton.style.fontSize = "15px";
+addToDoButton.style.fontStyle = "bold";
+addToDoButton.style.backgroundColor = "yellow";
+addToDoButton.style.borderRadius = "10px";
 bottomRight.appendChild(addToDoButton);
+
 
 // Function to render the to-do list for the selected project
 function renderToDoList(projectName) 
@@ -72,7 +80,10 @@ function renderToDoList(projectName)
     block.style.flexDirection = "row";
     block.style.alignItems = "center";
     block.style.gap = "20px";
-    bottomRight.appendChild(block);
+
+    const todoContainer = document.createElement("div");
+    todoContainer.appendChild(block);
+    bottomRight.appendChild(todoContainer);
 
     // Delete button functionality
     block.querySelector(".deltodo").addEventListener("click", function() 
@@ -88,6 +99,8 @@ function renderToDoList(projectName)
 addToDoButton.addEventListener("click", function() {
   const formDiv = document.createElement("div");
   const form = document.createElement("form");
+  form.style.display = "flex";
+  form.style.gap = "10px";
 
   // Create name label and input
   const nameLabel = document.createElement("label");
@@ -102,9 +115,44 @@ addToDoButton.addEventListener("click", function() {
   ['Low', 'Medium', 'High'].forEach(level => 
     {
     const option = document.createElement('option');
+    if(level == 'Low')
+    {
+      option.style.backgroundColor = "red";
+      
+    }
+    else if (level == 'Medium')
+    {
+      option.style.backgroundColor = "yellow";
+    }
+    else if (level == 'High')
+    {
+      option.style.backgroundColor = "green";
+    }
     option.value = level.toLowerCase();
     option.textContent = level;
+    
     urgencySelect.appendChild(option);
+
+    urgencySelect.addEventListener('change', function() 
+    {
+      if (this.value === 'low') 
+      {
+          this.style.backgroundColor = 'red';
+          this.style.fontWeight = "bold";
+      } 
+      else if (this.value === 'medium') 
+      {
+          this.style.backgroundColor = 'yellow';
+          this.style.fontWeight = "bold";
+      } 
+      else if (this.value === 'high') 
+      {
+          this.style.backgroundColor = 'green';
+          this.style.fontWeight = "bold";
+      }
+    });
+
+
     });
 
   // Create date label and input
@@ -157,6 +205,7 @@ addToDoButton.addEventListener("click", function() {
   form.appendChild(descInput);
   form.appendChild(submitButton);
   formDiv.appendChild(form);
+  
 
   // Add the form to the bottom-right div
   bottomRight.appendChild(formDiv);
