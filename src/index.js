@@ -35,6 +35,13 @@ bottomRight.style.display = "flex";
 bottomRight.style.flexDirection = "column";
 bottomRight.style.gap = "10px";
 
+// SPLIT BOTTOM RIGHT DIV
+const topBottomRight = document.createElement("div");
+bottomRight.appendChild(topBottomRight);
+
+const botBottomRight = document.createElement("div");
+bottomRight.appendChild(botBottomRight);
+
 // Create an object constructor for the to-do items and an array to store them
 function ToDo(name, date, urgency, description) 
 {
@@ -53,14 +60,14 @@ addToDoButton.style.fontSize = "15px";
 addToDoButton.style.fontStyle = "bold";
 addToDoButton.style.backgroundColor = "yellow";
 addToDoButton.style.borderRadius = "10px";
-bottomRight.appendChild(addToDoButton);
+topBottomRight.appendChild(addToDoButton);
 
 
 // Function to render the to-do list for the selected project
 function renderToDoList(projectName) 
 {
-  bottomRight.innerHTML = ''; 
-  bottomRight.appendChild(addToDoButton); 
+  botBottomRight.innerHTML = ''; 
+  botBottomRight.appendChild(addToDoButton); 
 
   const projectToDos = projects[projectName] || [];
 
@@ -83,7 +90,7 @@ function renderToDoList(projectName)
 
     const todoContainer = document.createElement("div");
     todoContainer.appendChild(block);
-    bottomRight.appendChild(todoContainer);
+    botBottomRight.appendChild(todoContainer);
 
     // Delete button functionality
     block.querySelector(".deltodo").addEventListener("click", function() 
@@ -96,8 +103,14 @@ function renderToDoList(projectName)
 }
 
 // Create the UI for adding a new to-do
-addToDoButton.addEventListener("click", function() {
+addToDoButton.addEventListener("click", function() 
+{
+  if (document.getElementById("todo-form")) return;
   const formDiv = document.createElement("div");
+  formDiv.id = "todo-form";
+  formDiv.style.width = "100%";
+  formDiv.style.marginTop = "10px";
+  
   const form = document.createElement("form");
   form.style.display = "flex";
   form.style.gap = "10px";
@@ -205,10 +218,11 @@ addToDoButton.addEventListener("click", function() {
   form.appendChild(descInput);
   form.appendChild(submitButton);
   formDiv.appendChild(form);
+
   
 
   // Add the form to the bottom-right div
-  bottomRight.appendChild(formDiv);
+  botBottomRight.appendChild(formDiv);
 });
 
 // BOTTOM LEFT (PROJECTS DIV)
@@ -219,8 +233,11 @@ const addProjectButton = document.createElement("button");
 addProjectButton.textContent = "ADD PROJECT +";
 bottomLeft.appendChild(addProjectButton);
 
-addProjectButton.addEventListener("click", function() {
+addProjectButton.addEventListener("click", function() 
+{
+  if (document.getElementById("project-list")) return;
   const formDiv = document.createElement("div");
+  formDiv.id = "project-list";
   const form = document.createElement("form");
   form.style.display = "flex";
   form.style.gap = "5px";
