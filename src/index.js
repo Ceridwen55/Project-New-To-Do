@@ -75,18 +75,48 @@ function renderToDoList(projectName)
     {
     const block = document.createElement("div");
     block.innerHTML = `
-      <h3>${toDo.name}</h3>
+      <h3 class="todo-name">${toDo.name}</h3>
       <p><strong>Due Date:</strong> ${toDo.date}</p>
-      <p><strong>Urgency:</strong> ${toDo.urgency}</p>
+      <p><strong>Urgency:</strong><span class="urgency-text"> ${toDo.urgency}</span></p>
       <p><strong>Description:</strong> ${toDo.description}</p>
-      <input type="checkbox" id="completed-checkbox">
+      <input type="checkbox" class="completed-checkbox" id="checkbox-${index}">
       <button class="deltodo">DELETE</button>
     `;
-
+    
+    const urgencyElement = block.querySelector(".urgency-text");
+    if (toDo.urgency === "high") 
+    {
+      urgencyElement.style.color = "green";
+      urgencyElement.style.fontWeight = "bold";
+    } 
+    else if (toDo.urgency === "medium") 
+    {
+      urgencyElement.style.color = "yellow";
+      urgencyElement.style.fontWeight = "bold";
+    } 
+    else if (toDo.urgency === "low") 
+    {
+      urgencyElement.style.color = "red";
+      urgencyElement.style.fontWeight = "bold";
+    }
     block.style.display = "flex";
     block.style.flexDirection = "row";
     block.style.alignItems = "center";
     block.style.gap = "20px";
+
+    const toDoNameElement = block.querySelector(".todo-name");
+    const checkbox = block.querySelector(`#checkbox-${index}`);
+    checkbox.addEventListener("change", function()
+    {
+      if (checkbox.checked)
+      {
+        block.style.textDecoration = "line-through";
+      }
+      else
+      {
+        block.style.textDecoration = "none";
+      }
+    });
 
     const todoContainer = document.createElement("div");
     todoContainer.appendChild(block);
@@ -249,7 +279,8 @@ addProjectButton.addEventListener("click", function()
 
   const submitProjectButton = document.createElement("button");
   submitProjectButton.textContent = "Submit";
-  submitProjectButton.addEventListener("click", function(e) {
+  submitProjectButton.addEventListener("click", function(e) 
+  {
     e.preventDefault();
     const projectName = projectInput.value.trim();
 
@@ -277,11 +308,26 @@ addProjectButton.addEventListener("click", function()
       formDiv.remove(); // Remove form after submission
     }
 
+
+    if (!projectName) 
+    {
+    alert("Project name cannot be empty!");
+    return;
+    }
+
+  });
+
+  const cancel = document.createElement("button");
+  cancel.textContent = "Cancel";
+  cancel.addEventListener("click", function()
+  {
+    formDiv.remove();
   });
 
   form.appendChild(projectLabel);
   form.appendChild(projectInput);
   form.appendChild(submitProjectButton);
+  form.appendChild(cancel);
   formDiv.appendChild(form);
   bottomLeft.appendChild(formDiv);
 });
