@@ -42,6 +42,9 @@ bottomRight.appendChild(topBottomRight);
 const botBottomRight = document.createElement("div");
 bottomRight.appendChild(botBottomRight);
 
+botBottomRight.style.height = "auto";
+botBottomRight.style.overflowY = "auto";
+
 // Create an object constructor for the to-do items and an array to store them
 function ToDo(name, date, urgency, description) 
 {
@@ -258,6 +261,7 @@ addToDoButton.addEventListener("click", function()
 // BOTTOM LEFT (PROJECTS DIV)
 const bottomLeft = document.getElementById("bottom-left");
 
+
 // 'Add Project' button
 const addProjectButton = document.createElement("button");
 addProjectButton.textContent = "ADD PROJECT +";
@@ -371,6 +375,7 @@ bottomLeft.style.flexDirection = "column";
 bottomLeft.style.alignItems = "center";
 bottomLeft.style.width = "30%";
 bottomLeft.style.height = "auto";
+bottomLeft.style.overflowY = "auto";
 bottomLeft.style.gap = "10px";
 
 addProjectButton.style.fontSize = "16px";
