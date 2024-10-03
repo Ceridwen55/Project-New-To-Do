@@ -23,6 +23,10 @@
 
 
 
+
+
+
+
 // TOP DIV
 const top = document.getElementById("top");
 top.textContent = "TO DO LIST";
@@ -34,7 +38,6 @@ signature.appendChild(namaewa);
 top.appendChild(signature);
 top.style.width = "100%";
 top.style.height = "40%";
-top.style.border = "solid";
 top.style.display = "flex";
 top.style.fontSize = "50px";
 top.style.fontStyle = "oblique";
@@ -56,16 +59,34 @@ namaewa.style.border = "dashed";
 namaewa.style.borderRadius = "10px";
 namaewa.style.padding = "4px";
 
+//BOTTOM
+
+bottom.style.display = "flex";
+bottom.style.width = "100%";
+bottom.style.height = "60%";
+bottom.style.borderTop = "groove 10px";
 
 
-
+// LAYOUT STYLE
+const home = document.getElementById("home");
+home.style.display = "flex";
+home.style.width = "100%";
+home.style.height = "100vh";
+home.style.flexDirection = "column";
+home.appendChild(top);
+home.appendChild(bottom);
+home.style.fontFamily = "Lato";
 
 
 // BOTTOM-RIGHT DIV
 const bottomRight = document.getElementById("bottom-right");
 bottomRight.style.display = "flex";
 bottomRight.style.flexDirection = "column";
-bottomRight.style.gap = "10px";
+bottomRight.style.backgroundColor = "#FFFFE0"
+bottomRight.style.width = "70%";
+bottomRight.style.height = "auto";
+bottomRight.style.borderLeft = "outset 10px";
+
 
 // SPLIT BOTTOM RIGHT DIV
 const topBottomRight = document.createElement("div");
@@ -90,11 +111,14 @@ const projects = JSON.parse(localStorage.getItem('projects')) || {};
 
 // Create an 'Add To Do' button for the bottom-right div
 const addToDoButton = document.createElement("button");
-addToDoButton.innerHTML = "ADD TO DO";
-addToDoButton.style.fontSize = "15px";
-addToDoButton.style.fontStyle = "bold";
+addToDoButton.innerHTML = "TO-DO ++";
+addToDoButton.style.fontSize = "17px";
 addToDoButton.style.backgroundColor = "yellow";
 addToDoButton.style.borderRadius = "10px";
+addToDoButton.style.fontWeight ="bold";
+addToDoButton.style.marginTop = "25px";
+addToDoButton.style.marginLeft = "25px";
+addToDoButton.style.boxShadow = "3px 1px 2px 10px yellow";
 topBottomRight.appendChild(addToDoButton);
 
 
@@ -126,7 +150,7 @@ function renderToDoList(projectName)
     } 
     else if (toDo.urgency === "medium") 
     {
-      urgencyElement.style.color = "yellow";
+      urgencyElement.style.color = "#D6EAF8";
       urgencyElement.style.fontWeight = "bold";
     } 
     else if (toDo.urgency === "low") 
@@ -138,6 +162,7 @@ function renderToDoList(projectName)
     block.style.flexDirection = "row";
     block.style.alignItems = "center";
     block.style.gap = "20px";
+    block.style.marginLeft = "25px";
 
     const toDoNameElement = block.querySelector(".todo-name");
     const checkbox = block.querySelector(`#checkbox-${index}`);
@@ -200,7 +225,7 @@ addToDoButton.addEventListener("click", function()
     }
     else if (level == 'Medium')
     {
-      option.style.backgroundColor = "yellow";
+      option.style.backgroundColor = "#D6EAF8";
     }
     else if (level == 'High')
     {
@@ -220,7 +245,7 @@ addToDoButton.addEventListener("click", function()
       } 
       else if (this.value === 'medium') 
       {
-          this.style.backgroundColor = 'yellow';
+          this.style.backgroundColor = '#D6EAF8';
           this.style.fontWeight = "bold";
       } 
       else if (this.value === 'high') 
@@ -283,7 +308,12 @@ addToDoButton.addEventListener("click", function()
   form.appendChild(descInput);
   form.appendChild(submitButton);
   formDiv.appendChild(form);
-
+  
+  formDiv.style.display = "flex";
+  formDiv.style.fontWeight = "bold";
+  form.style.marginLeft = "25px";
+  form.style.display = "flex";
+  form.style.flexDirection = "column";
   
 
   // Add the form to the bottom-right div
@@ -292,11 +322,27 @@ addToDoButton.addEventListener("click", function()
 
 // BOTTOM LEFT (PROJECTS DIV)
 const bottomLeft = document.getElementById("bottom-left");
+bottomLeft.style.display = "flex";
+bottomLeft.style.flexDirection = "column";
+bottomLeft.style.alignItems = "center";
+bottomLeft.style.width = "30%";
+bottomLeft.style.height = "auto";
+bottomLeft.style.overflowY = "auto";
+bottomLeft.style.gap = "10px";
+bottomLeft.style.backgroundColor = "#E6F4EA";
+
 
 
 // 'Add Project' button
 const addProjectButton = document.createElement("button");
-addProjectButton.textContent = "ADD PROJECT +";
+addProjectButton.textContent = "PROJECT +";
+addProjectButton.style.fontSize = "16px";
+addProjectButton.style.fontStyle = "oblique";
+addProjectButton.style.fontWeight = "bold";
+addProjectButton.style.borderRadius = "50px";
+addProjectButton.style.marginTop = "25px";
+addProjectButton.style.backgroundColor = "#90EE90";
+addProjectButton.style.boxShadow = "2px 4px 2px 10px #90EE90";
 bottomLeft.appendChild(addProjectButton);
 
 addProjectButton.addEventListener("click", function() 
@@ -372,40 +418,13 @@ addProjectButton.addEventListener("click", function()
 
 
 
-// LAYOUT STYLE
-const home = document.getElementById("home");
-home.style.display = "flex";
-home.style.width = "100%";
-home.style.height = "100vh";
-home.style.flexDirection = "column";
-home.appendChild(top);
-home.appendChild(bottom);
-home.style.fontFamily = "Lato";
 
 
 
 
-bottom.style.display = "flex";
-
-bottom.style.width = "100%";
-bottom.style.height = "60%";
-bottom.style.border = "solid";
-bottom.style.paddingTop = "20px"
 
 
 
-bottomLeft.style.display = "flex";
-bottomLeft.style.flexDirection = "column";
-bottomLeft.style.alignItems = "center";
-bottomLeft.style.width = "30%";
-bottomLeft.style.height = "auto";
-bottomLeft.style.overflowY = "auto";
-bottomLeft.style.gap = "10px";
-
-addProjectButton.style.fontSize = "16px";
-addProjectButton.style.fontStyle = "oblique";
-addProjectButton.style.fontWeight = "bold";
-addProjectButton.style.borderRadius = "50px";
 
 
 
