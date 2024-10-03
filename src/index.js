@@ -26,7 +26,39 @@
 // TOP DIV
 const top = document.getElementById("top");
 top.textContent = "TO DO LIST";
-;
+const signature = document.createElement("div");
+signature.textContent = "a prototype project by  ";
+const namaewa = document.createElement("div");
+namaewa.textContent = "Zulkan";
+signature.appendChild(namaewa);
+top.appendChild(signature);
+top.style.width = "100%";
+top.style.height = "40%";
+top.style.border = "solid";
+top.style.display = "flex";
+top.style.fontSize = "50px";
+top.style.fontStyle = "oblique";
+top.style.alignItems = "flex-start";
+top.style.paddingLeft = "100px";
+top.style.flexDirection = "column";
+top.style.justifyContent = "center";
+top.style.backgroundColor = "#D6EAF8";
+top.style.textDecoration = "line-through";
+
+signature.style.display = "flex";
+signature.style.flexDirection = "row";
+signature.style.gap = "10px";
+signature.style.fontSize = "25px";
+signature.style.marginLeft = "220px";
+signature.style.textDecoration = "underLine overLine";
+namaewa.style.fontWeight = "bold";
+namaewa.style.border = "dashed";
+namaewa.style.borderRadius = "10px";
+namaewa.style.padding = "4px";
+
+
+
+
 
 
 // BOTTOM-RIGHT DIV
@@ -351,14 +383,6 @@ home.appendChild(bottom);
 home.style.fontFamily = "Lato";
 
 
-top.style.width = "100%";
-top.style.height = "40%";
-top.style.border = "solid";
-top.style.display = "flex";
-top.style.fontSize = "50px";
-top.style.fontStyle = "oblique";
-top.style.alignItems = "center";
-top.style.paddingLeft = "100px";
 
 
 bottom.style.display = "flex";
